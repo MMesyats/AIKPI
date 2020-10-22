@@ -1,0 +1,41 @@
+body {
+    overflow: hidden;
+}
+.container {
+    position: relative;
+    margin: 0 auto;
+    width: 800px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    &-list {
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+    .ant-input {
+        position: absolute;
+        height: 80px;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    padding-bottom: 80px;
+    .message {
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 20px;
+        &-bot {
+            position: relative;
+            max-width: 40%;
+            color: white;
+            background-color: #006bdd;
+        }
+        &-user {
+            margin:  10px 0 10px auto;
+            position: relative;
+            max-width: 40%;
+            color: #444444;
+            background-color: #dddddd;
+        }
+    }
+}
