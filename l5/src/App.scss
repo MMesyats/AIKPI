@@ -1,0 +1,21 @@
+    
+.App {
+    min-height: 100vh;
+    align-content: center;
+    overflow: hidden;
+    justify-self: center;
+    align-self: center;
+    display: grid;
+    max-width: 1300px;
+    grid-template-columns: 1fr 7fr;
+    margin: 0 auto;
+    canvas
+     {
+          max-width: 100%;
+     }
+}
+.radio
+{
+     display: flex;
+     flex-direction: column;
+}

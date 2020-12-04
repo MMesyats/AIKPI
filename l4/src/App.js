@@ -10,7 +10,7 @@ function App() {
 	const [ shift, setShift ] = useState(0.2);
 	const [ freq, setFreq ] = useState(80);
 	const [ ampl, setAmpl ] = useState(0.8);
-	const [ nu, setNu ] = useState(500);
+	const [ nu, setNu ] = useState(300);
 	const [ b1, setB1 ] = useState(23);
 	const [ b2, setB2 ] = useState(23);
 
@@ -64,12 +64,19 @@ function App() {
 		zones.push(zone(-1.2 * a, 24, 24, t0 / 3));
 		zones.push(zone(3.9 * a, 6, 6, t0 / 2.7));
 		zones.push(zone(-0.6 * a, 10, 10, t0 / 2.6));
-		zones.push(zone(isAmplMinus ? -ampl : ampl, b1, b2, nu));
+		zones.push(zone(ampl, b1, b2, nu));
 		const tArray = [];
 		const aArray = [];
 		let isAlterrated = Math.random() >= 0.5;
 		for (let m = 0; m < cycles; m++) {
-			zones[4].a += zones[4].a + shift / zones[4].a;
+			if(Math.random() >= 0.5) 
+			{
+				zones[4].a = zones[4].a * (1 + shift / zones[4].a);
+			}
+			else {
+				zones[4].a = zones[4].a
+			}
+
 			zones[4].nu += zones[4].nu + zones[4].nu / 10;
 
 			for (let t = m * t0; t < (m + 1) * t0; t += 2) {
@@ -112,7 +119,7 @@ function App() {
 					withCycles && 
 					<>
 									<label>Alt</label>
-				<InputNumber value={shift} onChange={(val) => setShift(val)} />
+				<InputNumber value={shift} step={0.1} onChange={(val) => setShift(val)} />
 				<label>Cycles count</label>
 				<InputNumber value={cycles} min="1" onChange={(val) => setCycles(val)} />
 					</>
