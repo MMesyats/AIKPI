@@ -13,14 +13,14 @@ const exponentialSmoothing = (array, alpha = 0.9) => {
 
 const movingAverage = (array = [], width = 20) => {
 	const newArr = [ ...array ];
-	for (let i = 1 + width; i < array.length - width; i++)
-		newArr.push(newArr[i] + (array[i + width] - array[i - 1 - width]) / (1 + 2 * width));
-	console.log(newArr);
+	for (let i = width; i < array.length - width; i++) {
+		newArr[i] = newArr[i - 1] + (array[i + width] - array[i - width]) / (1 + 2 * width);
+	}
 	return newArr;
 };
 
 function App() {
-	const [ withCycles, changeWithCyvles ] = useState(false);
+	const [ withCycles, changeWithCyvles ] = useState(true);
 	const [ cycles, setCycles ] = useState(5);
 	const [ shift, setShift ] = useState(0.2);
 	const [ freq, setFreq ] = useState(80);
@@ -28,10 +28,10 @@ function App() {
 	const [ nu, setNu ] = useState(300);
 	const [ b1, setB1 ] = useState(23);
 	const [ b2, setB2 ] = useState(23);
-	const [ noise, setNoise ] = useState(0);
+	const [ noise, setNoise ] = useState(2);
 	const [ smoothingMode, setSmoothingMode ] = useState(0);
 	const [ alpha, setAlpha ] = useState(0.5);
-	const [ width, setWidth ] = useState(20);
+	const [ width, setWidth ] = useState(1);
 
 	const zone = (a, b1, b2, nu) => ({
 		a,
@@ -106,7 +106,7 @@ function App() {
 						const bottom = k < zone.nu ? zone.b1 : zone.b2;
 						a +=
 							zone.a * Math.exp(-Math.pow(k - zone.nu, 2) / (2 * Math.pow(bottom, 2))) +
-							(Math.random() - 0.5) * noise;
+							(Math.random() - 0.5) * noise * 10e-3;
 					});
 					aArray.push(a);
 					tArray.push(t);
@@ -114,13 +114,50 @@ function App() {
 				zones[4].a = ampl;
 				zones[4].nu = nu;
 			}
-			if (smoothingMode === 1) aArray = exponentialSmoothing(aArray, alpha);
-			if (smoothingMode === 2) aArray = movingAverage(aArray, width);
+			if (smoothingMode === 1) {
+				const sArray = exponentialSmoothing(aArray, alpha);
+				return {
+					datasets: [
+						{
+							label: 'smoothed',
+							data: sArray,
+							borderColor: 'rgba(255, 0, 99, 1)'
+						},
+						{
+							label: 'original',
+							data: aArray,
+							borderColor: 'rgba(0, 99, 255, 1)',
+							fill: false
+						}
+					],
+					labels: tArray
+				};
+			}
+			if (smoothingMode === 2) {
+				const sArray = movingAverage(aArray, width);
+				return {
+					datasets: [
+						{
+							label: 'smoothed',
+							data: sArray,
+							borderColor: 'rgba(255, 0, 99, 1)'
+						},
+						{
+							label: 'original',
+							data: aArray,
+							borderColor: 'rgba(0, 99, 255, 1)',
+							fill: false
+						}
+					],
+					labels: tArray
+				};
+			}
 
 			return {
 				datasets: [
 					{
-						label: 'L3',
+						label: 'original',
+						borderColor: 'rgba(0, 99, 255, 1)',
 						data: aArray
 					}
 				],
@@ -144,8 +181,8 @@ function App() {
 						<InputNumber value={shift} step={0.1} onChange={setShift} />
 						<label>Cycles count</label>
 						<InputNumber value={cycles} min="1" onChange={setCycles} />
-						<label>Noise</label>
-						<InputNumber value={noise} min="0" step={0.01} onChange={setNoise} />
+						<label>Noise (n*e-3)</label>
+						<InputNumber value={noise} min="0" step={0.1} onChange={setNoise} />
 						{smoothingMode === 1 && (
 							<React.Fragment>
 								<label>Alpha</label>
@@ -155,7 +192,7 @@ function App() {
 						{smoothingMode === 2 && (
 							<React.Fragment>
 								<label>Width</label>
-								<InputNumber value={width} onChange={setWidth} />
+								<InputNumber value={width} min={1} max={20} onChange={setWidth} />
 							</React.Fragment>
 						)}
 						<Radio.Group
