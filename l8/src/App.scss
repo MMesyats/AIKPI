@@ -1,0 +1,38 @@
+    
+.App {
+    min-height: 100vh;
+    align-content: center;
+    overflow: hidden;
+    justify-self: center;
+    align-self: center;
+    display: grid;
+    max-width: 1300px;
+    margin: 0 auto;
+    
+}
+.controls {
+     position: fixed;
+}
+.graphics {
+     max-width: 1200px;
+     grid-column: 2;
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     canvas {
+          max-width: 100%;
+     }
+}
+.radio
+{
+     display: flex;
+     flex-direction: column;
+}
+.matrix {
+     display: grid;
+     grid-template-columns: repeat(4,50px);
+     grid-template-rows: repeat(4,50px);     
+     p {
+          font-size: 14px;
+     }
+
+}
