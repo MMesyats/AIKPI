@@ -28,11 +28,15 @@
      flex-direction: column;
 }
 .matrix {
+     margin: 0 auto;
      display: grid;
      grid-template-columns: repeat(4,50px);
-     grid-template-rows: repeat(4,50px);     
-     p {
+     grid-template-rows: repeat(4,50px);  
+     .blue {
+          color: blue;
           font-size: 14px;
+          &.dom {
+               font-weight: 600;
+          }
      }
-
 }

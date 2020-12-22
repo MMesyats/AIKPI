@@ -181,7 +181,7 @@ function App() {
 						label: '2',
 						data: normCoords2,
 						borderColor: 'green',
-						borderWidth: 1,
+						borderWidth: 3,
 						fill: false,
 						showLine: true
 					},
@@ -279,8 +279,6 @@ function App() {
 					options={{
 						responsive: false,
 						maintainAspectRatio: true,
-						legend: false,
-						tooltips: true,
 						elements: { point: { radius: 0 } },
 						scales: {
 							xAxes: [
@@ -304,6 +302,11 @@ function App() {
 				/>
 				<div className="matrix">
 					{hausdorMatrix && hausdorMatrix.map((arr) => arr.map((el) => <p>{el.toFixed(4)}</p>))}
+					{hausdorMatrix.map((arr, i) => (
+						<p className={`blue ${i == 1 ? 'dom' : ''}`}>
+							{arr.reduce((acc, num) => acc + num, 0).toFixed(4)}
+						</p>
+					))}
 				</div>
 			</div>
 		</div>

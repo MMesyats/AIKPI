@@ -11,6 +11,43 @@ const readFile = async (c) => {
 	return data.split(' ').filter((val) => !isNaN(+val) && val !== '' && val !== '\n' && +val !== 0).map((val) => +val);
 };
 
+const mean = (s) => s.reduce((acc, val) => acc + val, 0) / s.length;
+
+const CHSS = (s = []) => 60000 / mean(s);
+
+const NN = (s) => 1 / CHSS(s);
+
+const std = (s) => {
+	const m = mean(s);
+	console.log(m);
+	return Math.sqrt(s.reduce((acc, v) => acc + Math.pow(v - m, 2), 0) / s.length);
+};
+
+function mode(numbers) {
+	var modes = [],
+		count = [],
+		i,
+		number,
+		maxIndex = 0;
+
+	for (i = 0; i < numbers.length; i += 1) {
+		number = numbers[i];
+		count[number] = (count[number] || 0) + 1;
+		if (count[number] > maxIndex) {
+			maxIndex = count[number];
+		}
+	}
+
+	for (i in count)
+		if (count.hasOwnProperty(i)) {
+			if (count[i] === maxIndex) {
+				modes.push(Number(i));
+			}
+		}
+
+	return modes;
+}
+
 function App() {
 	const [ file1Data, setFile1Data ] = useState([]);
 	const [ file2Data, setFile2Data ] = useState([]);
@@ -235,6 +272,19 @@ function App() {
 						maintainAspectRatio: true
 					}}
 				/>
+				<div>
+					<div />
+					<div>1</div>
+					<div>2</div>
+					<div>{CHSS(file1Data)}</div>
+					<div>{CHSS(file2Data)}</div>
+					<div>{NN(file1Data)}</div>
+					<div>{NN(file2Data)}</div>
+					<div>{std(file1Data)}</div>
+					<div>{std(file2Data)}</div>
+					<div>{mode(file1Data)}</div>
+					<div>{mode(file2Data)}</div>
+				</div>
 			</div>
 		</div>
 	);
