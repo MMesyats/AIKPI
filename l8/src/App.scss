@@ -36,3 +36,8 @@
      }
 
 }
+
+.table {
+     display: grid;
+     grid-template-columns: 80px 100px 100px;
+}

@@ -23,7 +23,16 @@ const std = (s) => {
 	return Math.sqrt(s.reduce((acc, v) => acc + Math.pow(v - m, 2), 0) / s.length);
 };
 
-function mode(numbers) {
+const IA = (s) => AMode(s) / (2 * mode(s)[0] * diffMaxMin(s));
+
+const diffMaxMin = (s) => Math.max(...s) - Math.min(...s);
+
+const AMode = (s) => {
+	const m = mode(s)[0];
+	return s.filter((v) => v === m).length / s.length * 100;
+};
+
+const mode = (numbers) => {
 	var modes = [],
 		count = [],
 		i,
@@ -46,7 +55,7 @@ function mode(numbers) {
 		}
 
 	return modes;
-}
+};
 
 function App() {
 	const [ file1Data, setFile1Data ] = useState([]);
@@ -272,18 +281,31 @@ function App() {
 						maintainAspectRatio: true
 					}}
 				/>
-				<div>
+				<div className="table">
 					<div />
 					<div>1</div>
 					<div>2</div>
-					<div>{CHSS(file1Data)}</div>
-					<div>{CHSS(file2Data)}</div>
-					<div>{NN(file1Data)}</div>
-					<div>{NN(file2Data)}</div>
-					<div>{std(file1Data)}</div>
-					<div>{std(file2Data)}</div>
-					<div>{mode(file1Data)}</div>
-					<div>{mode(file2Data)}</div>
+					<div>CHSS</div>
+					<div>{file1Data && CHSS(file1Data).toFixed(2)}</div>
+					<div>{file2Data && CHSS(file2Data).toFixed(2)}</div>
+					<div>NN</div>
+					<div>{file1Data && NN(file1Data).toFixed(2)}</div>
+					<div>{file2Data && NN(file2Data).toFixed(2)}</div>
+					<div>std</div>
+					<div>{file1Data && std(file1Data).toFixed(2)}</div>
+					<div>{file2Data && std(file2Data).toFixed(2)}</div>
+					<div>mode</div>
+					<div>{file1Data && mode(file1Data)[0]}</div>
+					<div>{file2Data && mode(file2Data)[0]}</div>
+					<div>Amod</div>
+					<div>{file1Data && AMode(file1Data).toFixed(2)}</div>
+					<div>{file2Data && AMode(file2Data).toFixed(2)}</div>
+					<div>MxDMn</div>
+					<div>{file1Data && diffMaxMin(file1Data).toFixed(2)}</div>
+					<div>{file2Data && diffMaxMin(file2Data).toFixed(2)}</div>
+					<div>IH</div>
+					<div>{file1Data && IA(file1Data).toFixed(10)}</div>
+					<div>{file2Data && IA(file2Data).toFixed(10)}</div>
 				</div>
 			</div>
 		</div>
